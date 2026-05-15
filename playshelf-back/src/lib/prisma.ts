@@ -1,8 +1,10 @@
-import { PrismaClient } from "../generated/prisma";
-// Why ../generated/prisma: That's where prisma generate put the client, as defined in your schema.prisma with output = "../src/generated/prisma".
+import { PrismaClient } from '../generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
+import dotenv from 'dotenv';
 
-const prisma = new PrismaClient()
+dotenv.config();
 
-export default prisma
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
-// This file creates one single PrismaClient instance and exports it — all your routes will import from here and share the same connection. 
+export default prisma;
